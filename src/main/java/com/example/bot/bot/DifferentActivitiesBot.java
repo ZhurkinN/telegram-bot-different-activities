@@ -1,7 +1,11 @@
-package com.example.bot.service;
+package com.example.bot.bot;
 
 import com.example.bot.config.BotConfig;
+import com.example.bot.service.MessagesService;
+import com.example.bot.service.UserService;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -14,6 +18,10 @@ import static com.example.bot.constants.ConstantKeeper.*;
 @Component
 public class DifferentActivitiesBot extends TelegramLongPollingBot {
 
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private MessagesService messagesService;
     final BotConfig botConfig;
 
     public DifferentActivitiesBot(BotConfig botConfig) {
@@ -39,24 +47,32 @@ public class DifferentActivitiesBot extends TelegramLongPollingBot {
             String messageText = updateMessage.getText();
 
             if (messageText.equals(START_COMMAND)) {
-                onStartCommandReceived(updateMessage.getChatId(), updateMessage.getChat().getFirstName());
+                answerOnStartCommand(updateMessage.getChatId(), updateMessage.getChat().getFirstName());
             }
 
-//            if (messageText.equals(SAVE_NODE_COMMAND)) {
-//
-//            }
+            if (messageText.equals(SAVE_NODE_COMMAND)) {
+                answerOnNodeCommand(updateMessage);
+            }
         }
 
     }
 
     @SneakyThrows
-    private void onStartCommandReceived(long chatId, String senderName) {
+    private void answerOnNodeCommand(Message message) {
+
+        userService.addUser(message);
+        messagesService.addMessage(message);
+        sendMessage(message.getChatId(), NODE_ANSWER);
+    }
+
+    @SneakyThrows
+    private void answerOnStartCommand(long chatId, String senderName) {
         String answer = String.format(START_ANSWER, senderName);
 
         sendMessage(chatId, answer);
     }
 
-    private void sendMessage(long chatId, String messageText) {
+    public void sendMessage(long chatId, String messageText) {
         SendMessage message = new SendMessage(String.valueOf(chatId), messageText);
 
         try {

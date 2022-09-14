@@ -1,6 +1,6 @@
 package com.example.bot.config;
 
-import com.example.bot.service.DifferentActivitiesBot;
+import com.example.bot.bot.DifferentActivitiesBot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;

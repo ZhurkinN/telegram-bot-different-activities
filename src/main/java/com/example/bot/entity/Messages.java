@@ -24,6 +24,7 @@ public class Messages {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long messageId;
 
+
     @Column(nullable = false, name = "chat_id")
     private Long chatId;
 
@@ -34,10 +35,13 @@ public class Messages {
     @Column(name = "text")
     private String messageText;
 
+    @Column(name = "node_number")
+    private Integer nodeNumber;
+
     @Override
     public String toString() {
-        return "Номер - " + messageId +
-                ", \nвремя - " + time +
-                ", \nзаметка - " + messageText;
+        return "Номер - " + nodeNumber +
+                "; \nВремя - " + time +
+                "; \nЗаметка - " + messageText;
     }
 }

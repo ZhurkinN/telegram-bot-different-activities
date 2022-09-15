@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface MessagesService {
 
-    void addMessage(Message message);
+    boolean addMessage(Message message);
 
-    List<Messages> findMessageByChatId(Message message);
+    List<Messages> findMessagesByChatId(Message message);
+
+    boolean deleteMessage(Message message);
 }

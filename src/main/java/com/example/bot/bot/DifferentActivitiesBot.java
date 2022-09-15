@@ -59,29 +59,49 @@ public class DifferentActivitiesBot extends TelegramLongPollingBot {
             if (messageText.equals(SHOW_NODES_COMMAND)) {
                 answerOnShowNodesCommand(updateMessage);
             }
-        }
 
+            if (messageText.startsWith(DELETE_NODE_COMMAND)) {
+                answerOnDeleteNodeCommand(updateMessage);
+            }
+        }
     }
 
+    @SneakyThrows
+    private void answerOnDeleteNodeCommand(Message message) {
+
+        if (messagesService.deleteMessage(message)) {
+            sendMessage(message.getChatId(), DELETE_NODE_ANSWER);
+        } else {
+            sendMessage(message.getChatId(), DELETE_NODE_NOT_FOUND_ANSWER);
+        }
+    }
+
+    @SneakyThrows
     private void answerOnShowNodesCommand(Message message) {
 
-        List<Messages> messagesList = messagesService.findMessageByChatId(message);
+        List<Messages> messagesList = messagesService.findMessagesByChatId(message);
 
-        sendMessage(message.getChatId(), SHOW_NODES_ANSWER);
+        if (!messagesList.isEmpty()) {
 
-        for (Messages msg : messagesList) {
-            sendMessage(message.getChatId(), msg.toString());
+            sendMessage(message.getChatId(), SHOW_NODES_ANSWER);
+
+            for (Messages msg : messagesList) {
+                sendMessage(message.getChatId(), msg.toString());
+            }
+        } else {
+            sendMessage(message.getChatId(), NO_NODES_ANSWER);
         }
-
-
     }
 
     @SneakyThrows
     private void answerOnSaveNodeCommand(Message message) {
 
         userService.addUser(message);
-        messagesService.addMessage(message);
-        sendMessage(message.getChatId(), NODE_ANSWER);
+        if (messagesService.addMessage(message)) {
+            sendMessage(message.getChatId(), NODE_ANSWER);
+        } else {
+            sendMessage(message.getChatId(), EMPTY_NODE_ANSWER);
+        }
     }
 
     @SneakyThrows

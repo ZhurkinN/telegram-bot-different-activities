@@ -20,7 +20,7 @@ import java.sql.Timestamp;
 public class Messages {
 
     @Id
-    @Column(unique = true, nullable = false, name = "message_id")
+    @Column(name = "message_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long messageId;
 
@@ -34,4 +34,10 @@ public class Messages {
     @Column(name = "text")
     private String messageText;
 
+    @Override
+    public String toString() {
+        return "Номер - " + messageId +
+                ", \nвремя - " + time +
+                ", \nзаметка - " + messageText;
+    }
 }

@@ -1,9 +1,9 @@
 package com.example.bot.bot;
 
 import com.example.bot.config.BotConfig;
+import com.example.bot.entity.Messages;
 import com.example.bot.service.MessagesService;
 import com.example.bot.service.UserService;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,6 +12,8 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import java.util.List;
 
 import static com.example.bot.constants.ConstantKeeper.*;
 
@@ -46,19 +48,36 @@ public class DifferentActivitiesBot extends TelegramLongPollingBot {
         if (update.hasMessage() && updateMessage.hasText()) {
             String messageText = updateMessage.getText();
 
-            if (messageText.equals(START_COMMAND)) {
+            if (messageText.equals(START_COMMAND) || messageText.equals(MENU_COMMAND)) {
                 answerOnStartCommand(updateMessage.getChatId(), updateMessage.getChat().getFirstName());
             }
 
-            if (messageText.equals(SAVE_NODE_COMMAND)) {
-                answerOnNodeCommand(updateMessage);
+            if (messageText.startsWith(SAVE_NODE_COMMAND)) {
+                answerOnSaveNodeCommand(updateMessage);
+            }
+
+            if (messageText.equals(SHOW_NODES_COMMAND)) {
+                answerOnShowNodesCommand(updateMessage);
             }
         }
 
     }
 
+    private void answerOnShowNodesCommand(Message message) {
+
+        List<Messages> messagesList = messagesService.findMessageByChatId(message);
+
+        sendMessage(message.getChatId(), SHOW_NODES_ANSWER);
+
+        for (Messages msg : messagesList) {
+            sendMessage(message.getChatId(), msg.toString());
+        }
+
+
+    }
+
     @SneakyThrows
-    private void answerOnNodeCommand(Message message) {
+    private void answerOnSaveNodeCommand(Message message) {
 
         userService.addUser(message);
         messagesService.addMessage(message);

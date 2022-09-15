@@ -21,7 +21,7 @@ import javax.persistence.Table;
 public class User {
 
     @Id
-    @Column(unique = true, nullable = false, name = "id")
+    @Column(name = "id")
     private Long Id;
 
     @Column(name = "user_name")

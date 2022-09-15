@@ -24,7 +24,7 @@ public class Messages {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long messageId;
 
-    @Column(unique = false, nullable = false, name = "chat_id")
+    @Column(nullable = false, name = "chat_id")
     private Long chatId;
 
     @Column(name = "time")

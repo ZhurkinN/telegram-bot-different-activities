@@ -10,10 +10,7 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,12 +24,14 @@ public class MessagesServiceImpl implements MessagesService {
 
         String node = StringHandler.handleNodeMessage(message.getText());
         Messages objectMessage = new Messages();
+        if (!node.isEmpty()) {
 
-        objectMessage.setChatId(message.getChatId())
-                .setMessageText(node)
-                .setTime(new Timestamp(System.currentTimeMillis()));
+            objectMessage.setChatId(message.getChatId())
+                    .setMessageText(node)
+                    .setTime(new Timestamp(System.currentTimeMillis()));
 
-        dao.save(objectMessage);
+            dao.save(objectMessage);
+        }
     }
 
     @Override

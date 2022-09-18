@@ -22,16 +22,16 @@ public class MessagesServiceImpl implements MessagesService {
     @Override
     public boolean addMessage(Message message) {
 
-        String node = StringHandler.handleNodeMessage(message.getText());
+        String node = StringHandler.handleNoteMessage(message.getText());
         Messages objectMessage = new Messages();
         if (!node.isEmpty()) {
 
-            int nodesCounter = dao.findByChatId(message.getChatId()).size();
+            int notesCounter = dao.findByChatId(message.getChatId()).size();
 
             objectMessage.setChatId(message.getChatId())
                     .setMessageText(node)
                     .setTime(new Timestamp(System.currentTimeMillis()))
-                    .setNodeNumber(++nodesCounter);
+                    .setNoteNumber(++notesCounter);
 
             dao.save(objectMessage);
             return true;
@@ -48,16 +48,16 @@ public class MessagesServiceImpl implements MessagesService {
     @Override
     public boolean deleteMessage(Message message) {
 
-        Integer nodeNumber = StringHandler.handleDeleteNodeMessage(message.getText());
-        if (nodeNumber > 0 && !dao.findByChatIdAndNodeNumber(message.getChatId(), nodeNumber).isEmpty()) {
+        Integer noteNumber = StringHandler.handleDeleteNoteMessage(message.getText());
+        if (noteNumber > 0 && !dao.findByChatIdAndNoteNumber(message.getChatId(), noteNumber).isEmpty()) {
 
-            dao.deleteMessagesByChatIdAndNodeNumber(message.getChatId(), nodeNumber);
+            dao.deleteMessagesByChatIdAndNoteNumber(message.getChatId(), noteNumber);
 
-            List<Messages> fixedMessages = dao.findByChatIdAndWhereNodeNumberMore(message.getChatId(), nodeNumber);
+            List<Messages> fixedMessages = dao.findByChatIdAndWhereNoteNumberMore(message.getChatId(), noteNumber);
             for (Messages msg : fixedMessages) {
 
-                int previousNodeNumber = msg.getNodeNumber();
-                msg.setNodeNumber(--previousNodeNumber);
+                int previousNoteNumber = msg.getNoteNumber();
+                msg.setNoteNumber(--previousNoteNumber);
             }
             dao.saveAll(fixedMessages);
             return true;

@@ -19,14 +19,14 @@ public interface MessageDAO extends CrudRepository<Messages, Long> {
 
     @Modifying
     @Query("delete from Messages m " +
-            "where m.chatId = ?1 and m.nodeNumber = ?2")
-    void deleteMessagesByChatIdAndNodeNumber(Long chatId, Integer nodeNumber);
+            "where m.chatId = ?1 and m.noteNumber = ?2")
+    void deleteMessagesByChatIdAndNoteNumber(Long chatId, Integer noteNumber);
 
     @Query("select m from Messages m " +
-            "where m.chatId = ?1 and m.nodeNumber = ?2")
-    List<Messages> findByChatIdAndNodeNumber(Long chatId, Integer nodeNumber);
+            "where m.chatId = ?1 and m.noteNumber = ?2")
+    List<Messages> findByChatIdAndNoteNumber(Long chatId, Integer noteNumber);
 
     @Query("select m from Messages m " +
-            "where m.chatId = ?1 and m.nodeNumber > ?2")
-    List<Messages> findByChatIdAndWhereNodeNumberMore(Long chatId, Integer nodeNumber);
+            "where m.chatId = ?1 and m.noteNumber > ?2")
+    List<Messages> findByChatIdAndWhereNoteNumberMore(Long chatId, Integer noteNumber);
 }

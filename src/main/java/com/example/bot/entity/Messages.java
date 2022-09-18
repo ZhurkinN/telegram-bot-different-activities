@@ -35,12 +35,12 @@ public class Messages {
     @Column(name = "text")
     private String messageText;
 
-    @Column(name = "node_number")
-    private Integer nodeNumber;
+    @Column(name = "note_number")
+    private Integer noteNumber;
 
     @Override
     public String toString() {
-        return "Номер - " + nodeNumber +
+        return "Номер - " + noteNumber +
                 "; \nВремя - " + time +
                 "; \nЗаметка - " + messageText;
     }

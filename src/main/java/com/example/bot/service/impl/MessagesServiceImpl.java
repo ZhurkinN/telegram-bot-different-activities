@@ -16,8 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MessagesServiceImpl implements MessagesService {
 
-    @Autowired
-    MessageDAO dao;
+    private final MessageDAO dao;
 
     @Override
     public boolean addMessage(Message message) {
@@ -54,10 +53,10 @@ public class MessagesServiceImpl implements MessagesService {
             dao.deleteMessagesByChatIdAndNoteNumber(message.getChatId(), noteNumber);
 
             List<Messages> fixedMessages = dao.findByChatIdAndWhereNoteNumberMore(message.getChatId(), noteNumber);
-            for (Messages msg : fixedMessages) {
+            for (Messages messageElement : fixedMessages) {
 
-                int previousNoteNumber = msg.getNoteNumber();
-                msg.setNoteNumber(--previousNoteNumber);
+                int previousNoteNumber = messageElement.getNoteNumber();
+                messageElement.setNoteNumber(--previousNoteNumber);
             }
             dao.saveAll(fixedMessages);
             return true;

@@ -13,8 +13,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserDAO dao;
+    private final UserDAO dao;
 
     @Override
     public void addUser(Message message) {

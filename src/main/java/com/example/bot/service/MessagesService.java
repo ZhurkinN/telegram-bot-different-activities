@@ -8,8 +8,6 @@ import java.util.List;
 public interface MessagesService {
 
     boolean addMessage(Message message);
-
     List<Messages> findMessagesByChatId(Message message);
-
     boolean deleteMessage(Message message);
 }

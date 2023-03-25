@@ -19,6 +19,6 @@
 - ``Hibernate``
 - ``PostgreSQL``
 - ``REST``
-- ``Gradle
+- ``Gradle``
 - ``Lombok``
 - ``Intellij Idea for IDE``
